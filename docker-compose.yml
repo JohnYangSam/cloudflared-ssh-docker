@@ -1,0 +1,47 @@
+# Docker compose configuration for setting up a Cloudflared Tunnel container
+#
+# Setup:
+# - Create a Cloudflared tunnel by going to:
+#   - Cloudflare -> Zero Trust -> Networks -> Tunnels -> Create Tunnel -> Select Cloudflared
+#   - Name your tunnel
+#   - Copy either of the installation instructions. Save the long token at the end to use in the later steps.
+#   - Configure:
+#       subdomain: anything you want
+#       domain: one of your domains
+#       Type: SSH
+#       URL: localhost:<your port for ssh (default is 22)
+#   - Save the tunnel
+#
+# - Create a folder called "cloudflared"
+# - Copy this file to docker-compose.yml
+# - Create a .env file with:
+#   CLOUDFLARED_TUNNEL_TOKEN=<tunnel token from your cloudlfared dashboard>
+# - `docker compose up -d` to run the tunnel in detached mode
+#
+# To SSH into the tunnel
+# ~/.ssh/config:
+#
+# # examplehostname
+# Host examplehostname
+#  Hostname <subdomain.maindomain.tld from your cloudflared setup>
+#  IdentityFile <your identity file if you are using one>
+#  ProxyCommand cloudflared access ssh --hostname %h
+#  User <your user>
+#  Port <your port>
+#
+#  SSH with: `ssh examplehostname`
+
+services:
+  # Cloudflared ssh Tunnel Service
+  cloudflared-ssh-tunnel:
+    image: cloudflare/cloudflared:latest              # Pull the latest version of the Cloudflared Tunnel image
+    container_name: cloudflare-ssh-tunnel             # Name of the Cloudflared Tunnel container
+    hostname: cloudflare-ssh-tunnel                   # Hostname for the Cloudflared Tunnel container
+    restart: unless-stopped                           # Restart the container unless manually stopped
+    # Network mode configuration
+    network_mode: "host"                              # Use the host network (so there is no isolation between host and container)
+    # Command to run Cloudflared Tunnel
+    command: tunnel run                               # Command to start the Cloudflared Tunnel
+    # Environment variables for Cloudflared Tunnel
+    environment:
+      - "TUNNEL_TOKEN=${CLOUDFLARED_TUNNEL_TOKEN}"     # Pass the Cloudflared Tunnel token from environment variable

@@ -1,0 +1,2 @@
+# Don't store .env secrets
+.env
