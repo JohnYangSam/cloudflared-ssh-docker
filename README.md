@@ -8,7 +8,7 @@
 
 ## Create a Cloudflared tunnel online
 - Create a Cloudflared tunnel by going to:
-    - Cloudflare -> Zero Trust -> Networks -> Tunnels -> Create Tunnel -> Select Cloudflared
+    - Cloudflare -> Access -> Zero Trust -> Networks -> Tunnels -> Create Tunnel -> Select Cloudflared
     - Name your tunnel
    - Copy either of the installation instructions. Save the long token at the end to use in the later steps.
    - Configure:
