@@ -16,7 +16,7 @@
         subdomain: anything you want
         domain: one of your domains
         Type: SSH
-        URL: localhost:<your port for ssh (default is 22)
+        URL: localhost:<your port for ssh (default is 22) OR for Mac: host.docker.internal:22
         ```
    - Save the tunnel
 
